@@ -1,8 +1,12 @@
 name: Build project
 
 on:
-  push:
-    branches: [ CI_CD/pet-studio-ci-cd ]
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - 'develop'
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
