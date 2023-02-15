@@ -10,7 +10,7 @@ on:
 jobs:
   buildForAllSupportedPlatforms:
     name: Started job
-    runs-on: [ "self-hosted", "macOS", "X64", " my-runner-label" ]
+    runs-on: [ "self-hosted", "macOS", "X64", "my-runner-label" ]
     strategy:
       fail-fast: false
       matrix:
