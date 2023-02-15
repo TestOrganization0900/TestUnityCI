@@ -20,81 +20,14 @@ jobs:
           - Genopets
         testMode:
           - playmode
+          - editmode
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          lfs: false
-      - uses: actions/cache@v2
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-          restore-keys: |
-            Library-
-      - uses: game-ci/unity-test-runner@v2
-        id: tests
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          testMode: ${{ matrix.testMode }}
-          artifactsPath: ${{ matrix.testMode }}-artifacts
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: ${{ matrix.testMode }} Test Results
-          # coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+my.assembly.*'
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test results for ${{ matrix.testMode }}
-          path: ${{ steps.tests.outputs.artifactsPath }}
-      # - uses: actions/upload-artifact@v2
-      #   if: always()
-      #   with:
-      #     name: Coverage results for ${{ matrix.testMode }}
-      #     path: ${{ steps.tests.outputs.coveragePath }}
-
-
-
-
-
-
-
-# name: Build project
-
-# on:
-#   pull_request:
-#     types:
-#       - opened
-#       - reopened
-#     branches:
-#       - 'develop'
-#   push:
-#     branches: [ TestBranch1 ]
-# jobs:
-#   testAllModes:
-#     name: Test in ${{ matrix.testMode }}
-#     runs-on: [ "self-hosted", "macOS", "X64", "my-runner-label" ]
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         projectPath:
-#           - Genopets
-#         testMode:
-#           - playmode
-#           - editmode
-#     steps:
-#       - uses: actions/checkout@v3
-#         with:
-#           ref: ${{ github.head_ref }}
-#           fetch-depth: 0
-
-#       # #Deleting local folders
-#       # - name: Deleting server data folder
-#       #   run:  rm -rf $GITHUB_WORKSPACE/${{ matrix.projectPath }}/ServerData/
-#       # - name: Deleting previous build folder
-#       #   run:  rm -rf $GITHUB_WORKSPACE/${{ matrix.projectPath }}/CI_Builds/PetStudioWebGL/
-
-#       #Build
-#       - name: Runnning unity build
-#         id: webgl-build
-#         # run: echo 'ammar'
-#         run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml -testPlatform PlayMode
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      #Build
+      - name: Runnning unity build
+        id: webgl-build
+        # run: echo 'ammar'
+        run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml -testPlatform PlayMode
