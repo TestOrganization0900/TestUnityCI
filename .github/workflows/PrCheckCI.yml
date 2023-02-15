@@ -7,6 +7,8 @@ on:
       - reopened
     branches:
       - 'develop'
+  push:
+    branches: [ TestBranch1 ]
 jobs:
   buildForAllSupportedPlatforms:
     name: Started job
@@ -34,4 +36,4 @@ jobs:
       - name: Runnning unity build
         id: webgl-build
         # run: echo 'ammar'
-        run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml
+        run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml
