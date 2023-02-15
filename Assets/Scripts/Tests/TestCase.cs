@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 public class TestCase
 {
+    [UnityTest]
     public IEnumerator TestGameManager()
     {
         GameObject gameObject = new GameObject();
