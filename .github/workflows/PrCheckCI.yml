@@ -1,0 +1,39 @@
+# name: Build project
+
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - reopened
+#     branches:
+#       - 'develop'
+#   push:
+#     branches: [ TestBranch1 ]
+# jobs:
+#   buildForAllSupportedPlatforms:
+#     name: Started job
+#     runs-on: [ "self-hosted", "macOS", "X64", "my-runner-label" ]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         projectPath:
+#           - Genopets
+#         targetPlatform:
+#           - WebGL # WebGL1.
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           ref: ${{ github.head_ref }}
+#           fetch-depth: 0
+
+#       # #Deleting local folders
+#       # - name: Deleting server data folder
+#       #   run:  rm -rf $GITHUB_WORKSPACE/${{ matrix.projectPath }}/ServerData/
+#       # - name: Deleting previous build folder
+#       #   run:  rm -rf $GITHUB_WORKSPACE/${{ matrix.projectPath }}/CI_Builds/PetStudioWebGL/
+
+#       #Build
+#       - name: Runnning unity build
+#         id: webgl-build
+#         # run: echo 'ammar'
+#         run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml -testPlatform PlayMode
