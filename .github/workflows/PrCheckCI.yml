@@ -19,7 +19,7 @@ jobs:
         projectPath:
           - Genopets
         testMode:
-          - editmode
+          - playmode
     steps:
       - uses: actions/checkout@v3
         with:
