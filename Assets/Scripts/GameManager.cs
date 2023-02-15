@@ -17,6 +17,6 @@ public class GameManager : MonoBehaviour
     
     public bool IsTrueVersion2()
     {
-        return true;
+        return false;
     }
 }
