@@ -1,0 +1,63 @@
+name: Build project
+
+on:
+  push:
+    branches: [ CI_CD/pet-studio-ci-cd ]
+jobs:
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: [ "self-hosted", "macOS", "ARM64", "unity" ]
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - Genopets
+        targetPlatform:
+          - WebGL # WebGL1.
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      #Deleting local folders
+      - name: Deleting server data folder
+        run:  rm -rf $GITHUB_WORKSPACE/${{ matrix.projectPath }}/ServerData/
+      - name: Deleting previous build folder
+        run:  rm -rf $GITHUB_WORKSPACE/${{ matrix.projectPath }}/CI_Builds/PetStudioWebGL/
+
+      #Build
+      - name: Run webgl build on cloud machine
+        id: webgl-build
+        # run: echo 'ammar'
+        run: /Users/user214889/Desktop/unity/2022.1.5f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -executeMethod PetStudioBuildCreator.PerforPetStudiomWebGlBuild -projectPath $GITHUB_WORKSPACE/${{ matrix.projectPath }}
+      # - uses: actions/upload-artifact@v2
+      #   if: steps.webgl-build.outcome == 'success'
+      #   with:
+      #     name: Build-${{ matrix.targetPlatform }}
+      #     path: ${{ matrix.projectPath }}/CI_Builds/ #Double check path maybe in genopets path is ../build
+
+      # #Aws configurations
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   if: steps.webgl-build.outcome == 'success'
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
+          
+      #Addressables
+      - name: Remove previous addressables from s3
+        if: steps.webgl-build.outcome == 'success'
+        run: ~/Desktop/aws-cli/aws s3 rm s3://genopets-3d/DevelopmentData/Addressables/WebGL/PetStudioWebGL/ --recursive #very sensitive command, use cautiously
+      - name: Upload Addressables
+        if: steps.webgl-build.outcome == 'success'
+        run: ~/Desktop/aws-cli/aws s3 cp $GITHUB_WORKSPACE/${{ matrix.projectPath }}/ServerData/DevelopmentData/ s3://genopets-3d/DevelopmentData/ --recursive --acl public-read
+
+      # #Deploy
+      - name: Remove previous test data from s3
+        if: steps.webgl-build.outcome == 'success'
+        run: ~/Desktop/aws-cli/aws s3 rm s3://genopets-3d/DevelopmentData/Builds/WebGL/PetStudioWebGL/ --recursive #very sensitive command, use cautiously
+      - name: Deploy build to s3
+        if: steps.webgl-build.outcome == 'success'
+        run: ~/Desktop/aws-cli/aws s3 cp $GITHUB_WORKSPACE/${{ matrix.projectPath }}/CI_Builds/PetStudioWebGL/ s3://genopets-3d/DevelopmentData/Builds/WebGL/PetStudioWebGL/ --recursive --acl public-read
