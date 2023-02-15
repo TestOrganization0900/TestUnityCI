@@ -19,7 +19,7 @@ jobs:
         projectPath:
           - Genopets
         testMode:
-          - playmode
+          - editmode
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,4 +29,4 @@ jobs:
       - name: Runnning unity build
         id: webgl-build
         # run: echo 'ammar'
-        run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml
+        run: /Applications/Unity/Hub/Editor/2022.1.5f1/Unity.app/Contents/MacOS/Unity -runTests -batchmode -projectPath $GITHUB_WORKSPACE -testResults /Users/tintash/OwnData/Results/results.xml -testPlatform PlayMode
