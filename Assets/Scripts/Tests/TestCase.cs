@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
-public class TestCase : MonoBehaviour
+public class TestCase
 {
-    // Start is called before the first frame update
-    void Start()
+    public IEnumerator TestGameManager()
     {
+        GameObject gameObject = new GameObject();
+        GameManager gameManager = gameObject.AddComponent<GameManager>();
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        yield return new WaitForSeconds(0.5f);
         
+        Assert.IsTrue(gameManager.IsTrue());
     }
 }
