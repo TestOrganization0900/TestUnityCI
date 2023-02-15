@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     private void Start()
     {
-        Debug.Log("Check");
+        Debug.Log("Check1");
     }
 
     public bool IsTrueVersion1()
