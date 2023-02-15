@@ -6,7 +6,7 @@ on:
       - opened
       - reopened
     branches:
-      - 'develop1'
+      - 'develop'
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
